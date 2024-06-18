@@ -1,11 +1,11 @@
 #include "../include/kanaviLiDAR_ROS/kanaviLiDAR_ros.h"
-#include "../include/kanaviLiDAR_ROS/kanavi_converter.h"
+#include "../include/kanaviLiDAR_ROS/kanavi_converter.h" // kanaviLiDAR_ros.h
 #include <pcl/common/common.h>
 #include <pcl/common/impl/angles.hpp>
 #include <pcl/common/transforms.h>
 
 #include <stdlib.h>
-#include "../include/kanaviLiDAR_ROS/config.h"
+#include "../include/kanaviLiDAR_ROS/config.h" // kanaviLiDAR_ros.h 
 
 void printBuf(lidarDatagram dg)
 {
@@ -30,10 +30,10 @@ void printBuf(lidarDatagram dg)
 			line = 0;
 		}
 		break;
-	case KANAVI::MODEL::LiDAR::VL_R002IF01:
-		for(int ch=0; ch<2; ch++)
+	case KANAVI::MODEL::LiDAR::VL_R004IK01:
+		for(int ch=0; ch<4; ch++)
 		{
-			for(int i=0; i<KANAVI::INDUSTRIAL::SPECIFICATION::R2::HORIZONTAL_DATA_CNT; i++)
+			for(int i=0; i<KANAVI::INDUSTRIAL::SPECIFICATION::R4::HORIZONTAL_DATA_CNT; i++)
 			{
 				printf("[%.1d][%.3d] : %f [m] ", ch, i, dg.industrial_Length[ch][i]);
 				line++;
@@ -47,6 +47,19 @@ void printBuf(lidarDatagram dg)
 			line = 0;
 		}
 		break;
+	/*case KANAVI::MODEL::LiDAR::VL_R001IK03:
+	        for(int i=0; i<KANAVI::INDUSTRIAL::SPECIFICATION::R270::HORIZONTAL_DATA_CNT; i++)
+	        {
+	                printf("Line");
+	                line++;
+	                if(line ==5)
+	                {
+	                        printf("\n");
+	                        line = 0;
+	                }
+	        }
+	        printf("\n");
+	        break;*/
 	}
 }
 
@@ -85,6 +98,36 @@ void helpAlarm()
 		"          Base IP  : 192.168.123.99, 5000"
 		"[Industrial] UDP Mode : Multicast\n"
 		"             Base IP  : 192.168.123.99, 5000, 224.0.0.5\n");
+}
+
+void parseArguments(int argc, char* argv[], std::string& udpIP, int& udpPort, bool& setMulticast, std::string& g_udpIP, std::string& sensor_IP, bool& checked_sensorIP)
+{
+	if(argc == 0)
+	{
+		helpAlarm();
+	}
+	else
+	{
+		for(int i=0; i<argc; i++)
+		{
+			if(!strcmp(argv[i], "-i") || !strcmp(argv[i], "-I"))		// check ARGV - IP & port num.
+			{
+				udpIP = argv[i+1];
+				udpPort = atoi(argv[i+2]);
+			}
+			else if(!strcmp(argv[i], "-m") || !strcmp(argv[i], "-M"))	// check ARGV - udp multicast ip
+			{
+				setMulticast = true;
+				g_udpIP = argv[i+1];
+			}
+			else if(!strcmp(argv[i], "-s"))								// check ARGV - sensor IP
+			{
+				sensor_IP = argv[i+1];
+				checked_sensorIP = true;
+			}
+		}
+	}
+
 }
 
 void dpNowCondition(std::string lip, int port, std::string gip, bool multi, std::string frame_name)
@@ -142,10 +185,10 @@ int main(int argc, char* argv[])
 	/*---define UDP communcation Var.*/
 	kanaviUDP *m_udp = new kanaviUDP;		// kanavi UDP processor
 
-	std::string udpIP = "192.168.123.99";			// local UDP ethernet Port IP
+	std::string udpIP = "192.168.123.100";			// local UDP ethernet Port IP
 	std::string g_udpIP = "224.0.0.5";				// UDP multicast Group IP
 	int udpPort = 5000;								// UDP Port Num
-	bool setMulticast = false;						// check UDP Multicast FUNC.
+	bool setMulticast = true;						// check UDP Multicast FUNC.
 
 	bool checked_sensorIP = false;					//check transmit LiDAR sensor IP
 	std::string sensor_IP = "192.168.123.200";		//set transmit LiDAR sensor IP
@@ -159,10 +202,12 @@ int main(int argc, char* argv[])
 
 	float z_rotat_angle = 0;
 
-	int axesMode = 1;								// axes mode select
+	int axesMode = 1;
+
+        parseArguments(argc, argv, udpIP, udpPort, setMulticast, g_udpIP, sensor_IP, checked_sensorIP);								// axes mode select
 
 	//check argv -- 인자 확인
-	if(argc == 0)
+	/*if(argc == 0)
 	{
 		helpAlarm();
 		return 0;
@@ -233,7 +278,7 @@ int main(int argc, char* argv[])
 				return 0;
 			}
 		}
-	}
+	}*/
 
 	//read config files(.ini).
 	if(checked_iniLoad)
@@ -323,10 +368,11 @@ int main(int argc, char* argv[])
 		dpNowCondition(udpIP, udpPort, g_udpIP, setMulticast, name_fixedFrame);		//output Configuration condition
 
 		int cnt =0;
-		recv_buf = m_udp->getData();												//get LiDAR data using udp
-		printf("recv_buf size %d\n", recv_buf.size());
+		std::vector<u_char> recv_buf = m_udp->getData();												//get LiDAR data using udp
+		printf("recv_buf size: %d\n", recv_buf.size());  
+		datagram = m_KanaviLidar->process(recv_buf);
+                // printBuf(datagram);								//processing, get datagram
 
-		datagram = m_KanaviLidar->process(recv_buf);								//processing, get datagram
 		end = clock();
 		result = (double)(end - start);
 		cout << "Stage 1 Time : "<< ((result)/CLOCKS_PER_SEC) * 1000 << " microseconds" << endl;
@@ -336,14 +382,17 @@ int main(int argc, char* argv[])
 		case static_cast<int>(KANAVI::MODEL::LiDAR::VL_AS16) :
 			z_rotat_angle = 17.5;
 			break;
-		case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R002IF01:
+		case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R002IK01:
 			z_rotat_angle = 30;
 			break;
-		case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R001IK02:
-			z_rotat_angle = -60;
-			break;
-		case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R004IK02:
+		//case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R001IK02:
+			//z_rotat_angle = -60;
+			//break;
+		case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R004IK01:
 			z_rotat_angle = 35;
+			break;
+		case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R001IK03:
+			z_rotat_angle = 120;
 			break;
 		default:
 			break;
@@ -358,12 +407,12 @@ int main(int argc, char* argv[])
 
 		if(datagram.PARA_Input_END)								// All data processing END.
 		{
-			// printf("DISPLAY....\n");
+			printf("DISPLAY....\n");
 			m_convertor->setReverse(checked_h_reverse);			// check horizontal angle Reverse
 			m_convertor->setDatagram(datagram);					// convert Length array to Point Cloud
 			m_convertor->setaxesMode(axesMode);					// set axes mode in 3D visualization
 			PointCloudT cloud = m_convertor->getPointCloud();	// get pcl::PointCloud<pcl::PointXYZRGB>
-			printf("point size : %d\n", cloud.size());
+			printf("Point size: %d\n", cloud.size());
 			
 			//rotation Z
 			pcl::transformPointCloud(cloud, cloud, transform_Z);	//rotation Point Cloud
@@ -372,9 +421,10 @@ int main(int argc, char* argv[])
 		}
 		end = clock();
 		result = (double)(end - start);
-		cout << "Stage 2 Time : "<< ((result)/CLOCKS_PER_SEC) * 1000 << " microseconds" << endl;
+		cout << "Stage 2 Time : "<< ((result)/CLOCKS_PER_SEC) * 1000 << " milliseconds" << endl;
 		// printBuf(datagram);								//dp datagram
 		datagram.clear();
+                recv_buf.clear();
 
 		ros::spinOnce();		//update
 		// loop_rate.sleep();
@@ -382,7 +432,7 @@ int main(int argc, char* argv[])
 		end = clock();
 		result = (double)(end - start);
 		cout << "Processing Time : "<< ((result)/CLOCKS_PER_SEC)<<" seconds" << endl;
-		cout << "Processing Time : "<< ((result)/CLOCKS_PER_SEC) * 1000 << " microseconds" << endl;
+		cout << "Processing Time : "<< ((result)/CLOCKS_PER_SEC) * 1000 << " milliseconds" << endl;
 	}
 
 	delete m_udp;
