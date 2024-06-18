@@ -28,58 +28,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __Kanavi_CONVERTER_H__
-#define __Kanavi_CONVERTER_H__
+#ifndef kanaviLidarProcessor_H
+#define kanaviLidarProcessor_H
+
 
 /**
- * @file kanavi_converter.h
+ * @file kanaviProcessor.h
  * @author twchong (twchong@kanavi-mobility.com)
- * @brief 
+ * @brief to process Kanavi-Mobility LiDAR (first stage)
  * @version 0.1
- * @date 2022-07-05
+ * @date 2022-07-01
  * 
  * @copyright Copyright (c) 2022
  * 
  */
 
-#include "kanaviLiDAR_ros.h"
-#include <pcl/point_types_conversion.h>
+#include "../include/header.h"
+#include "../include/lidar_spec.h"
+#include "../LiDAR/parser/lidarParser.h"
+#include <cmath>
 
-typedef pcl::PointCloud<pcl::PointXYZRGB>	PointCloudT;
-
-class kanavi_converter
+class kanaviLidarProcessor
 {
 public:
-	kanavi_converter(/* args */);
-	~kanavi_converter();
+    kanaviLidarProcessor();
+	~kanaviLidarProcessor();
+	lidarDatagram process(const std::vector<u_char> &data);
 
-	void setDatagram(const lidarDatagram &datagram);
-	void setReverse(const bool &checked=false);
-	void setaxesMode(const int &mode = 1);
-	PointCloudT getPointCloud();
+    int getLiDARModel();
+
 private:
-	//func.
-	void calculateAngular(int model);
-	void generatePointCloud(const lidarDatagram &datagram, PointCloudT &cloud_);
-	pcl::PointXYZRGB length2point(float len, float v_sin, float v_cos, float h_sin, float h_cos);
-	void HSV2RGB(float *fR, float *fG, float *fB, float fH, float fS, float fV);
 
-	/* data */
-	lidarDatagram g_datagram;
-	bool checked_setAngular;
+	//var.
+    lidarDatagram *m_datagram;
+    lidarParser *m_dataParser;
 
-	std::vector<float> v_sin;
-	std::vector<float> v_cos;
-	std::vector<float> h_sin;
-	std::vector<float> h_cos;
-
-	//point cloud
-	PointCloudT cloud;
-
-	bool g_checked_HorizontalReverse;
-
-	// axes mode
-	int gaxesMode;
+	int g_lidarModel;
 };
 
-#endif // __Kanavi_CONVERTER_H__
+#endif // kanaviLidarProcessor_H

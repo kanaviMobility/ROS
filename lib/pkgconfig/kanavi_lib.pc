@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir_old=${prefix}/include/KANAVI_LIB
+includedir_new=${prefix}/include
+
+Name: kanavi_sdk
+Description: Open Source LiDAR data processor for Kanavi-Mobility. ltd., co., LiDAR sensors
+Version: 0.0.1
+Libs: -L${exec_prefix}/lib -lKanavi_Industrial -lKanavi_VL_AS16 -lKanaviParser -lKanaviProcessor -lKanaviUDP
+Cflags: -I${includedir_old} -I${includedir_new}

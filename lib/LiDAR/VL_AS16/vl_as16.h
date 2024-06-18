@@ -28,58 +28,52 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __Kanavi_CONVERTER_H__
-#define __Kanavi_CONVERTER_H__
+#ifndef VL_AS16_H
+#define VL_AS16_H
 
 /**
- * @file kanavi_converter.h
+ * @file vl_as16.h
  * @author twchong (twchong@kanavi-mobility.com)
- * @brief 
+ * @brief to processing Kanavi-Mobility LiDAR sensor of VL-AS16
  * @version 0.1
- * @date 2022-07-05
+ * @date 2022-07-01
  * 
  * @copyright Copyright (c) 2022
  * 
  */
 
-#include "kanaviLiDAR_ros.h"
-#include <pcl/point_types_conversion.h>
+#include "../../include/lidar_spec.h"
+#include "../../include/header.h"
+class VL_AS16{
 
-typedef pcl::PointCloud<pcl::PointXYZRGB>	PointCloudT;
-
-class kanavi_converter
-{
 public:
-	kanavi_converter(/* args */);
-	~kanavi_converter();
+    VL_AS16();
+	~VL_AS16();
 
-	void setDatagram(const lidarDatagram &datagram);
-	void setReverse(const bool &checked=false);
-	void setaxesMode(const int &mode = 1);
-	PointCloudT getPointCloud();
+    void processor(const std::vector<u_char> &data, lidarDatagram &datagram);
+
 private:
-	//func.
-	void calculateAngular(int model);
-	void generatePointCloud(const lidarDatagram &datagram, PointCloudT &cloud_);
-	pcl::PointXYZRGB length2point(float len, float v_sin, float v_cos, float h_sin, float h_cos);
-	void HSV2RGB(float *fR, float *fG, float *fB, float fH, float fS, float fV);
 
-	/* data */
-	lidarDatagram g_datagram;
-	bool checked_setAngular;
+    void sortData(const std::vector<u_char> &data, lidarDatagram &protocol);
+    void sortData_SET02(const std::vector<u_char> &data, lidarDatagram &protocol);
+    void sortData_SET03(const std::vector<u_char> &data, lidarDatagram &protocol);
 
-	std::vector<float> v_sin;
-	std::vector<float> v_cos;
-	std::vector<float> h_sin;
-	std::vector<float> h_cos;
+    void sortLength(const std::vector<u_char> &data, lidarDatagram &protocol);
+    void sortOBJ(const std::vector<u_char> &data, lidarDatagram &protocol, const size_t &startPos);
+    void sortEnW(const std::vector<u_char> &data, lidarDatagram &protocol);
 
-	//point cloud
-	PointCloudT cloud;
+    int FUNC_HEXtoDEC(u_char up, u_char down);
+    int FUNC_HEX2DEX_Length(u_char up, u_char down);
+    float FUNC_HEX2DEX_objSize(u_char up, u_char down);
 
-	bool g_checked_HorizontalReverse;
+    uint16_t each8to16(u_char up, u_char down);
 
-	// axes mode
-	int gaxesMode;
+	const int SIZE_HEAD2LENGTH = static_cast<int>(KANAVI::VL_AS16::PROTOCOL_SIZE::HEAD)
+							+ static_cast<int>(KANAVI::VL_AS16::PROTOCOL_SIZE::TARGET_ID)
+							+ static_cast<int>(KANAVI::VL_AS16::PROTOCOL_SIZE::SOURCE_ID)
+							+ static_cast<int>(KANAVI::VL_AS16::PROTOCOL_SIZE::COMMAND)
+							+ static_cast<int>(KANAVI::VL_AS16::PROTOCOL_SIZE::PARAMETER)
+							+ static_cast<int>(KANAVI::VL_AS16::PROTOCOL_SIZE::DATALENGTH);	//14
 };
 
-#endif // __Kanavi_CONVERTER_H__
+#endif // VL_AS16_H
