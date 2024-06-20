@@ -214,7 +214,7 @@ namespace KANAVI {
 			namespace R270 {
 				const double	HORIZONTAL_FoV			= 270;
 				const double	HORIZONTAL_RESOLUTION	= 0.25;
-				const int		HORIZONTAL_DATA_CNT		= static_cast<int>(HORIZONTAL_FoV-HORIZONTAL_RESOLUTION);
+				const int		HORIZONTAL_DATA_CNT		= static_cast<int>(HORIZONTAL_FoV/HORIZONTAL_RESOLUTION);
 				const double	VERTICAL_FoV			= 1;
 				const double	VERTICAL_RESOLUTION		= 1;
 				const int		VERTICAL_CHANNEL		= static_cast<int>(VERTICAL_FoV / VERTICAL_RESOLUTION);
