@@ -204,10 +204,10 @@ int main(int argc, char* argv[])
 
 	int axesMode = 1;
 
-        parseArguments(argc, argv, udpIP, udpPort, setMulticast, g_udpIP, sensor_IP, checked_sensorIP);								// axes mode select
+        // parseArguments(argc, argv, udpIP, udpPort, setMulticast, g_udpIP, sensor_IP, checked_sensorIP);								// axes mode select
 
 	//check argv -- 인자 확인
-	/*if(argc == 0)
+	if(argc == 0)
 	{
 		helpAlarm();
 		return 0;
@@ -278,7 +278,7 @@ int main(int argc, char* argv[])
 				return 0;
 			}
 		}
-	}*/
+	}
 
 	//read config files(.ini).
 	if(checked_iniLoad)
