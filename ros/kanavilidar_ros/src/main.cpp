@@ -392,7 +392,7 @@ int main(int argc, char* argv[])
 			z_rotat_angle = 35;
 			break;
 		case KANAVI::INDUSTRIAL::COMMON::PROTOCOL_VALUE::MODEL::VL_R001IK03:
-			z_rotat_angle = 120;
+			z_rotat_angle = -45;
 			break;
 		default:
 			break;
