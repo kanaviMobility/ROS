@@ -3,11 +3,25 @@
 #if defined(ROS1)
 #include <ros1/kanavi_node.h>
 
+// Entry point for this module
+/**
+ * @brief [TODO] Describe the function main
+ * @return int [description]
+ * @param argc [description]
+ * @param **argv [description]
+ */
 int main(int argc, char **argv)
 {
-	printf("ROS1 build test\n");
+RCLCPP_INFO(node_->get_logger(), "ROS1 build test");
 	ros::init(argc, argv, "r4");
 
+/**
+ * @brief [TODO] Describe the function node
+ * @return kanavi_node [description]
+ * @param "r4" [description]
+ * @param argc [description]
+ * @param argv [description]
+ */
 	kanavi_node node("r4", argc, argv);
 
 	node.run();
@@ -19,6 +33,13 @@ int main(int argc, char **argv)
 
 #include <ros2/kanavi_node.h>
 
+// Entry point for this module
+/**
+ * @brief [TODO] Describe the function main
+ * @return int [description]
+ * @param argc [description]
+ * @param **argv [description]
+ */
 int main(int argc, char **argv)
 {
 	// init ROS2
@@ -37,4 +58,3 @@ int main(int argc, char **argv)
 }
 
 #endif
-

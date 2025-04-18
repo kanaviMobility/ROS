@@ -64,19 +64,28 @@ kanavi_node::kanavi_node(const std::string &node_, int &argc_, char **argv_) : r
 		int model_ = -1;
 		if (!strcmp("r270", node_.c_str()))
 		{
-			printf("check Node R270\n");
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R270::BASE_ZERO_ANGLE;
 		}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param !strcmp("r4" [description]
+ * @param node_.c_str( [description]
+ */
 		else if (!strcmp("r4", node_.c_str()))
 		{
-			printf("check Node R4\n");
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R4::BASE_ZERO_ANGLE;
 		}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param !strcmp("r2" [description]
+ * @param node_.c_str( [description]
+ */
 		else if (!strcmp("r2", node_.c_str()))
 		{
-			printf("check Node R2\n");
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R2::BASE_ZERO_ANGLE;
 		}
@@ -143,7 +152,6 @@ void kanavi_node::receiveData()
 
 	if(m_process->checkedProcessEnd())
 	{
-		printf("*** Parsing Process END***\n");
 
 		length2PointCloud(m_process->getDatagram());
 
@@ -176,16 +184,16 @@ void kanavi_node::endProcess()
  */
 void kanavi_node::log_set_parameters()
 {
-	printf("---------KANAVI ROS2------------\n");
-	printf("Local IP :\t%s\n", local_ip_.c_str());
-	printf("Port Num. :\t%d\n", port_);
+RCLCPP_INFO(node_->get_logger(), "---------KANAVI ROS2------------");
+RCLCPP_INFO(node_->get_logger(), "Local IP :\t%s", local_ip_.c_str());
+RCLCPP_INFO(node_->get_logger(), "Port Num. :\t%d", port_);
 	if(checked_multicast_)
 	{
-		printf("Multicast IP :\t%s\n", multicast_ip_.c_str());
+RCLCPP_INFO(node_->get_logger(), "Multicast IP :\t%s", multicast_ip_.c_str());
 	}
-	printf("Fixed Frame Name :\t%s\n", fixedName_.c_str());
-	printf("Topic Name :\t%s\n", topicName_.c_str());
-	printf("--------------------------------\n");
+RCLCPP_INFO(node_->get_logger(), "Fixed Frame Name :\t%s", fixedName_.c_str());
+RCLCPP_INFO(node_->get_logger(), "Topic Name :\t%s", topicName_.c_str());
+RCLCPP_INFO(node_->get_logger(), "--------------------------------");
 }
 
 void kanavi_node::calculateAngular(int model)
@@ -229,7 +237,6 @@ void kanavi_node::calculateAngular(int model)
 
 void kanavi_node::length2PointCloud(kanaviDatagram datagram)
 {
-	printf("### Processing Point Cloud\n");
 
 	// generate Point Cloud
 	generatePointCloud(datagram, *g_pointcloud);
@@ -300,30 +307,55 @@ void kanavi_node::HSV2RGB(float *fR, float *fG, float *fB, float fH, float fS, f
 		*fG = fX;
 		*fB = 0;
 	}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param 2 [description]
+ */
 	else if (0 <= fHPrime && fHPrime < 2)
 	{
 		*fR = fX;
 		*fG = fC;
 		*fB = 0;
 	}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param 3 [description]
+ */
 	else if (0 <= fHPrime && fHPrime < 3)
 	{
 		*fR = 0;
 		*fG = fC;
 		*fB = fX;
 	}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param 4 [description]
+ */
 	else if (0 <= fHPrime && fHPrime < 4)
 	{
 		*fR = 0;
 		*fG = fX;
 		*fB = fC;
 	}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param 5 [description]
+ */
 	else if (0 <= fHPrime && fHPrime < 5)
 	{
 		*fR = fX;
 		*fG = 0;
 		*fB = fC;
 	}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param 6 [description]
+ */
 	else if (0 <= fHPrime && fHPrime < 6)
 	{
 		*fR = fC;

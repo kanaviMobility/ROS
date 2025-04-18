@@ -48,6 +48,10 @@ struct argvContainer
 };
 
 
+/**
+ * @class argv_parser
+ * @brief [TODO] Describe the purpose of class argv_parser
+ */
 class argv_parser
 {
 private:
@@ -55,6 +59,12 @@ private:
 	argvContainer argvResult;
 
 	// funcs.
+/**
+ * @brief [TODO] Describe the function parseArgv
+ * @return void [description]
+ * @param &argc_ [description]
+ * @param **argv_ [description]
+ */
 	void parseArgv(const int &argc_, char **argv_);
 	
 	// Vars.
@@ -66,6 +76,10 @@ public:
 	}
 	~argv_parser(){}
 
+/**
+ * @brief [TODO] Describe the function getParameters
+ * @return argvContainer [description]
+ */
 	argvContainer getParameters();
 };
 
@@ -90,15 +104,33 @@ inline void argv_parser::parseArgv(const int &argc_, char **argv_)
 			argvResult.local_ip = argv_[i+1];
 			argvResult.port = atoi(argv_[i+2]);
 		}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param !strcmp(argv_[i] [description]
+ * @param KANAVI::ROS::PARAMETER_Multicast.c_str( [description]
+ */
 		else if(!strcmp(argv_[i], KANAVI::ROS::PARAMETER_Multicast.c_str()))	// check ARGV - udp multicast ip
 		{
 			argvResult.checked_multicast = true;
 			argvResult.multicast_ip = argv_[i+1];
 		}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param !strcmp(argv_[i] [description]
+ * @param KANAVI::ROS::PARAMETER_FIXED.c_str( [description]
+ */
 		else if(!strcmp(argv_[i], KANAVI::ROS::PARAMETER_FIXED.c_str()))							// check ARGV - ROS Fixed name
 		{
 			argvResult.fixedName = argv_[i+1];
 		}
+/**
+ * @brief [TODO] Describe the function if
+ * @return else [description]
+ * @param !strcmp(argv_[i] [description]
+ * @param KANAVI::ROS::PARAMETER_TOPIC.c_str( [description]
+ */
 		else if(!strcmp(argv_[i], KANAVI::ROS::PARAMETER_TOPIC.c_str()))							// check ARGV - ROS topic name
 		{
 			argvResult.topicName = argv_[i+1];

@@ -118,12 +118,10 @@ void kanavi_udp::check_udp_buf_size()
 
 		if(send_size < MAX_BUF_SIZE)
 		{
-			printf("send size resizing..\n");
 			setsockopt(g_udpSocket, SOL_SOCKET, SO_SNDBUF, &setSize, sizeof(setSize));			
 		}
 		if(recv_size < MAX_BUF_SIZE)
 		{
-			printf("recv size resizing..\n");
 			setsockopt(g_udpSocket, SOL_SOCKET, SO_RCVBUF, &setSize, sizeof(setSize));
 		}
 	}
@@ -143,12 +141,9 @@ std::vector<u_char> kanavi_udp::getData()
 
 	int size = recvfrom(g_udpSocket, g_udp_buf, MAX_BUF_SIZE, 0, (struct sockaddr*)&g_senderAddr, &addr_len);
 
-	printf("CHECK SIZE : %d\n", size);
 	char ip_str[INET_ADDRSTRLEN];
     // IP 주소 변환 (network byte order → string)
     inet_ntop(AF_INET, &(g_senderAddr.sin_addr), ip_str, sizeof(ip_str));
-	printf("IP Address: %s\n", ip_str);
-    printf("Port: %d\n", ntohs(g_senderAddr.sin_port));
 
 	if(size > 0)
 	{
@@ -177,6 +172,12 @@ void kanavi_udp::sendData(std::vector<u_char> data_)
  */
 int kanavi_udp::connect()
 {
+/**
+ * @brief [TODO] Describe the function bind
+ * @return return [description]
+ * @param g_udpSocket [description]
+ * @param sockaddr* [description]
+ */
 	return bind(g_udpSocket, (struct sockaddr*)&g_udpAddr, sizeof(g_udpAddr));
 }
 
@@ -187,5 +188,10 @@ int kanavi_udp::connect()
  */
 int kanavi_udp::disconnect()
 {
+/**
+ * @brief [TODO] Describe the function close
+ * @return return [description]
+ * @param g_udpSocket [description]
+ */
 	return close(g_udpSocket);
 }

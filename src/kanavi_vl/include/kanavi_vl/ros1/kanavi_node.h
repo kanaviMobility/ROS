@@ -45,32 +45,102 @@ typedef pcl::PointCloud<PointT> PointCloudT;
 
 using namespace std::chrono_literals;  // "10ms"와 같은 단위 사용을 위해 필요
 
+/**
+ * @class kanavi_node
+ * @brief [TODO] Describe the purpose of class kanavi_node
+ */
 class kanavi_node
 {
 private:
 
 	//SECTION - FUNCS.
 
+/**
+ * @brief [TODO] Describe the function helpAlarm
+ * @return void [description]
+ */
 	void helpAlarm();
 
+/**
+ * @brief [TODO] Describe the function receiveData
+ * @return void [description]
+ */
 	void receiveData();
 
+/**
+ * @brief [TODO] Describe the function endProcess
+ * @return void [description]
+ */
 	void endProcess();
 
+/**
+ * @brief [TODO] Describe the function log_set_parameters
+ * @return void [description]
+ */
 	void log_set_parameters();
 
+/**
+ * @brief [TODO] Describe the function length2PointCloud
+ * @return void [description]
+ * @param datagram [description]
+ */
 	void length2PointCloud(kanaviDatagram datagram);
 
+/**
+ * @brief [TODO] Describe the function calculateAngular
+ * @return void [description]
+ * @param model [description]
+ */
 	void calculateAngular(int model);
 
+/**
+ * @brief [TODO] Describe the function generatePointCloud
+ * @return void [description]
+ * @param &datagram [description]
+ * @param &cloud_ [description]
+ */
 	void generatePointCloud(const kanaviDatagram &datagram, PointCloudT &cloud_);
 
+/**
+ * @brief [TODO] Describe the function length2point
+ * @return PointT [description]
+ * @param len [description]
+ * @param v_sin [description]
+ * @param v_cos [description]
+ * @param h_sin [description]
+ * @param h_cos [description]
+ */
 	PointT length2point(float len, float v_sin, float v_cos, float h_sin, float h_cos);
 
+/**
+ * @brief [TODO] Describe the function HSV2RGB
+ * @return void [description]
+ * @param *fR [description]
+ * @param *fG [description]
+ * @param *fB [description]
+ * @param fH [description]
+ * @param fS [description]
+ * @param fV [description]
+ */
 	void HSV2RGB(float *fR, float *fG, float *fB, float fH, float fS, float fV);
 	
+/**
+ * @brief [TODO] Describe the function cloud_to_cloud_msg
+ * @return sensor_msgs::PointCloud2 [description]
+ * @param ww [description]
+ * @param hh [description]
+ * @param cloud [description]
+ * @param timestamp [description]
+ * @param frame [description]
+ */
 	sensor_msgs::PointCloud2 cloud_to_cloud_msg(int ww, int hh, const pcl::PointCloud<pcl::PointXYZRGB>& cloud, int timestamp, const std::string& frame);
 
+/**
+ * @brief [TODO] Describe the function rotateAxisZ
+ * @return void [description]
+ * @param cloud [description]
+ * @param angle [description]
+ */
 	void rotateAxisZ(PointCloudT::Ptr cloud, float angle);
 
 	// need process...
@@ -126,6 +196,10 @@ public:
 	~kanavi_node();
 
 	// void publishing();
+/**
+ * @brief [TODO] Describe the function run
+ * @return void [description]
+ */
 	void run();
 };
 #endif // __KANAVI_NODE_H__

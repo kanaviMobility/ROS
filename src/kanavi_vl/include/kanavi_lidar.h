@@ -95,18 +95,67 @@ namespace KANAVI
 	}
 }
 
+/**
+ * @class kanavi_lidar
+ * @brief [TODO] Describe the purpose of class kanavi_lidar
+ */
 class kanavi_lidar
 {
 private:
 	// FUNCTIONS----
+/**
+ * @brief [TODO] Describe the function classification
+ * @return int [description]
+ * @param &data [description]
+ */
 	int classification(const std::vector<u_char> &data);
+/**
+ * @brief [TODO] Describe the function checkDataInputEnd
+ * @return int [description]
+ * @param &data [description]
+ */
 	int checkDataInputEnd(const std::vector<u_char> &data);
+/**
+ * @brief [TODO] Describe the function checkChannel
+ * @return int [description]
+ * @param &data [description]
+ */
 	int checkChannel(const std::vector<u_char> &data);
+/**
+ * @brief [TODO] Describe the function parse
+ * @return void [description]
+ * @param &data [description]
+ */
 	void parse(const std::vector<u_char> &data);
 
+/**
+ * @brief [TODO] Describe the function r2
+ * @return void [description]
+ * @param &input [description]
+ * @param *output [description]
+ */
 	void r2(const std::vector<u_char> &input, kanaviDatagram *output);
+/**
+ * @brief [TODO] Describe the function r4
+ * @return void [description]
+ * @param &input [description]
+ * @param *output [description]
+ */
 	void r4(const std::vector<u_char> &input, kanaviDatagram *output);
+/**
+ * @brief [TODO] Describe the function r270
+ * @return void [description]
+ * @param &input [description]
+ * @param *output [description]
+ */
 	void r270(const std::vector<u_char> &input, kanaviDatagram *output);
+/**
+ * @brief [TODO] Describe the function parseLength
+ * @return void [description]
+ * @param &input [description]
+ * @param *output [description]
+ * @param ch [description]
+ */
 	void parseLength(const std::vector<u_char> &input, kanaviDatagram *output, int ch);
 	// !FUNTCIONS---
 
@@ -122,12 +171,29 @@ public:
 	kanavi_lidar(int model_);
 	~kanavi_lidar();
 
+/**
+ * @brief [TODO] Describe the function process
+ * @return int [description]
+ * @param &data [description]
+ */
 	int process(const std::vector<u_char> &data);
 
+/**
+ * @brief [TODO] Describe the function getLiDARModel
+ * @return std::string [description]
+ */
 	std::string getLiDARModel();
 
+/**
+ * @brief [TODO] Describe the function checkedProcessEnd
+ * @return bool [description]
+ */
 	bool checkedProcessEnd();
 
+/**
+ * @brief [TODO] Describe the function getDatagram
+ * @return kanaviDatagram [description]
+ */
 	kanaviDatagram getDatagram();
 
 };
