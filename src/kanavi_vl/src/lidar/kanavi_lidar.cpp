@@ -35,13 +35,13 @@ int kanavi_lidar::classification(const std::vector<u_char> &data)
 		switch (indus_M)
 		{
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2:
-		printf("********R2**********\n");
+			printf("********R2**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2;
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4:
-		printf("********R4**********\n");
+			printf("********R4**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4;
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270:
-		printf("********R270**********\n");
+			printf("********R270**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270;
 		default:
 			return -1;
@@ -123,6 +123,7 @@ int kanavi_lidar::checkChannel(const std::vector<u_char> &data)
 
 int kanavi_lidar::process(const std::vector<u_char> &data)
 {
+	printf("---------KANAVI PROCESS------------\n");
 	std::vector<u_char> buf_;
 
 	// check data Input end.
@@ -310,4 +311,35 @@ bool kanavi_lidar::checkedProcessEnd()
 kanaviDatagram kanavi_lidar::getDatagram()
 {
 	return *datagram_;
+}
+
+//TODO - TEST
+int kanavi_lidar::process2(const std::vector<u_char> &data)
+{
+	printf("---------KANAVI PROCESS------------\n");
+
+	std::unique_ptr<FrameAssembler> assembler;
+
+	if (datagram_->model == KANAVI::COMMON::PROTOCOL_VALUE::R4)
+	{
+		assembler = std::make_unique<R4Assembler>();
+	}
+	else if (datagram_->model == KANAVI::COMMON::PROTOCOL_VALUE::R270)
+	{
+		assembler = std::make_unique<R270Assembler>();
+	}
+	else
+	{
+		printf("Unsupported model: %d\n", datagram_->model);
+		return -1;
+	}
+
+	if (assembler->addData(data))
+	{
+		auto datagram = assembler->toDatagram();
+		// TODO: convert datagram to point cloud and publish
+		assembler->reset();
+	}
+
+	return 0;
 }

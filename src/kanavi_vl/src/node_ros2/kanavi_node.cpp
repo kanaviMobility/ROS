@@ -149,7 +149,7 @@ void kanavi_node::endProcess()
  */
 void kanavi_node::log_set_parameters()
 {
-	printf("---------KANAVI ROS1------------\n");
+	printf("---------KANAVI ROS2------------\n");
 	printf("Local IP :\t%s\n", local_ip_.c_str());
 	printf("Port Num. :\t%d\n", port_);
 	if (checked_multicast_)
