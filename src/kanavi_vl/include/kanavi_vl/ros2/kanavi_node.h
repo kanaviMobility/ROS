@@ -43,7 +43,10 @@ using namespace std::chrono_literals;  // "10ms"와 같은 단위 사용을 위�
 
 /**
  * @class kanavi_node
- * @brief [TODO] Describe the purpose of class kanavi_node
+ * @brief ROS2 node wrapper for Kanavi LiDAR sensor integration.
+ *
+ * This class manages receiving LiDAR data via UDP, parsing it into structured
+ * data formats, converting it into PCL point clouds, and publishing to ROS topics.
  */
 class kanavi_node : public rclcpp::Node
 {
@@ -52,79 +55,72 @@ private:
 	//SECTION - FUNCS.
 
 /**
- * @brief [TODO] Describe the function helpAlarm
- * @return void [description]
+ * @brief Prints help information for using command-line arguments.
  */
 	void helpAlarm();
 
 /**
- * @brief [TODO] Describe the function receiveData
- * @return void [description]
+ * @brief Receives UDP data from the LiDAR and initiates parsing.
  */
 	void receiveData();
 
 /**
- * @brief [TODO] Describe the function endProcess
- * @return void [description]
+ * @brief Finalizes the node process and cleans up resources.
  */
 	void endProcess();
 
 /**
- * @brief [TODO] Describe the function log_set_parameters
- * @return void [description]
+ * @brief Sets up the logging parameters for the ROS2 node.
  */
 	void log_set_parameters();
 
+
 /**
- * @brief [TODO] Describe the function length2PointCloud
- * @return void [description]
- * @param datagram [description]
+ * @brief Converts raw datagram into an internal point cloud representation.
+ * @param datagram Parsed datagram from LiDAR sensor.
  */
 	void length2PointCloud(kanaviDatagram datagram);
 
 /**
- * @brief [TODO] Describe the function generatePointCloud
- * @return void [description]
- * @param &datagram [description]
- * @param &cloud_ [description]
+ * @brief Converts a kanaviDatagram into a PCL-compatible point cloud.
+ * @param datagram Parsed kanaviDatagram.
+ * @param cloud_ Output point cloud.
  */
 	void generatePointCloud(const kanaviDatagram &datagram, PointCloudT &cloud_);
 
 /**
- * @brief [TODO] Describe the function length2point
- * @return PointT [description]
- * @param len [description]
- * @param v_sin [description]
- * @param v_cos [description]
- * @param h_sin [description]
- * @param h_cos [description]
+ * @brief Converts a length measurement and trigonometric values to a 3D point.
+ * @param len Distance measurement.
+ * @param v_sin Vertical sine.
+ * @param v_cos Vertical cosine.
+ * @param h_sin Horizontal sine.
+ * @param h_cos Horizontal cosine.
+ * @return Computed 3D point(XYZRGB).
  */
 	PointT length2point(float len, float v_sin, float v_cos, float h_sin, float h_cos);
 
 /**
- * @brief [TODO] Describe the function rotateAxisZ
- * @return void [description]
- * @param cloud [description]
- * @param angle [description]
+ * @brief Rotates the point cloud around the Z-axis by a given angle.
+ * @param cloud Input/output point cloud.
+ * @param angle Rotation angle in radians.
  */
 	void rotateAxisZ(PointCloudT::Ptr cloud, float angle);
 	
+
 /**
- * @brief [TODO] Describe the function HSV2RGB
- * @return void [description]
- * @param *fR [description]
- * @param *fG [description]
- * @param *fB [description]
- * @param fH [description]
- * @param fS [description]
- * @param fV [description]
+ * @brief Converts HSV color to RGB color.
+ * @param fR Pointer to resulting red value.
+ * @param fG Pointer to resulting green value.
+ * @param fB Pointer to resulting blue value.
+ * @param fH Hue component.
+ * @param fS Saturation component.
+ * @param fV Value component.
  */
 	void HSV2RGB(float *fR, float *fG, float *fB, float fH, float fS, float fV);
 
 /**
- * @brief [TODO] Describe the function publish_pointcloud
- * @return void [description]
- * @param cloud_ [description]
+ * @brief Publishes the given point cloud to a ROS2 topic.
+ * @param cloud_ Point cloud to publish.
  */
 	void publish_pointcloud(PointCloudT::Ptr cloud_);
 	// need process...
@@ -177,13 +173,18 @@ private:
 	//!SECTION	
 
 public:
+/**
+ * @brief Constructor for kanavi_node, sets up the ROS2 node.
+ * @param node_ Node name.
+ * @param argc_ Argument count.
+ * @param argv_ Argument values.
+ */
 	kanavi_node(const std::string &node_, int &argc_, char **argv_);
 	~kanavi_node();
 
 /**
- * @brief [TODO] Describe the function calculateAngular
- * @return void [description]
- * @param model [description]
+ * @brief Calculates angular resolution and alignment based on LiDAR model.
+ * @param model LiDAR model type (e.g., R2, R4, R270).
  */
 	void calculateAngular(int model);
 

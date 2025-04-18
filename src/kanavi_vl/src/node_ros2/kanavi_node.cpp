@@ -1,12 +1,5 @@
 #include "ros2/kanavi_node.h"
 
-/**
- * @brief Construct a new kanavi node::kanavi node object
- * 
- * @param node_ Node name
- * @param argc_ argc
- * @param argv_ argv
- */
 kanavi_node::kanavi_node(const std::string &node_, int &argc_, char **argv_) : rclcpp::Node(node_)
 {
 	checked_multicast_ = false;
@@ -67,23 +60,11 @@ kanavi_node::kanavi_node(const std::string &node_, int &argc_, char **argv_) : r
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R270::BASE_ZERO_ANGLE;
 		}
-/**
- * @brief [TODO] Describe the function if
- * @return else [description]
- * @param !strcmp("r4" [description]
- * @param node_.c_str( [description]
- */
 		else if (!strcmp("r4", node_.c_str()))
 		{
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R4::BASE_ZERO_ANGLE;
 		}
-/**
- * @brief [TODO] Describe the function if
- * @return else [description]
- * @param !strcmp("r2" [description]
- * @param node_.c_str( [description]
- */
 		else if (!strcmp("r2", node_.c_str()))
 		{
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2;
@@ -111,18 +92,10 @@ kanavi_node::kanavi_node(const std::string &node_, int &argc_, char **argv_) : r
 	}
 }
 
-/**
- * @brief Destroy the kanavi node::kanavi node object
- * 
- */
 kanavi_node::~kanavi_node()
 {
 }
 
-/**
- * @brief when command '-h' input, Display Help Strings
- * 
- */
 void kanavi_node::helpAlarm()
 {
 	printf("[HELP]============ \n"
@@ -135,10 +108,6 @@ void kanavi_node::helpAlarm()
 		, KANAVI::ROS::PARAMETER_IP.c_str(), KANAVI::ROS::PARAMETER_IP.c_str(), KANAVI::ROS::PARAMETER_Multicast.c_str(), KANAVI::ROS::PARAMETER_Multicast.c_str(), KANAVI::ROS::PARAMETER_FIXED.c_str(), KANAVI::ROS::PARAMETER_TOPIC.c_str());	
 }
 
-/**
- * @brief receive Data From UDP using Timer
- * 
- */
 void kanavi_node::receiveData()
 {
 	// recv data using udp
@@ -166,10 +135,6 @@ void kanavi_node::receiveData()
 	// process data
 }
 
-/**
- * @brief Node Process END checker
- * 
- */
 void kanavi_node::endProcess()
 {
 	// Clean up resources safely
@@ -184,16 +149,16 @@ void kanavi_node::endProcess()
  */
 void kanavi_node::log_set_parameters()
 {
-RCLCPP_INFO(node_->get_logger(), "---------KANAVI ROS2------------");
-RCLCPP_INFO(node_->get_logger(), "Local IP :\t%s", local_ip_.c_str());
-RCLCPP_INFO(node_->get_logger(), "Port Num. :\t%d", port_);
-	if(checked_multicast_)
+	printf("---------KANAVI ROS1------------\n");
+	printf("Local IP :\t%s\n", local_ip_.c_str());
+	printf("Port Num. :\t%d\n", port_);
+	if (checked_multicast_)
 	{
-RCLCPP_INFO(node_->get_logger(), "Multicast IP :\t%s", multicast_ip_.c_str());
+		printf("Multicast IP :\t%s\n", multicast_ip_.c_str());
 	}
-RCLCPP_INFO(node_->get_logger(), "Fixed Frame Name :\t%s", fixedName_.c_str());
-RCLCPP_INFO(node_->get_logger(), "Topic Name :\t%s", topicName_.c_str());
-RCLCPP_INFO(node_->get_logger(), "--------------------------------");
+	printf("Fixed Frame Name :\t%s\n", fixedName_.c_str());
+	printf("Topic Name :\t%s\n", topicName_.c_str());
+	printf("--------------------------------\n");
 }
 
 void kanavi_node::calculateAngular(int model)
@@ -307,55 +272,31 @@ void kanavi_node::HSV2RGB(float *fR, float *fG, float *fB, float fH, float fS, f
 		*fG = fX;
 		*fB = 0;
 	}
-/**
- * @brief [TODO] Describe the function if
- * @return else [description]
- * @param 2 [description]
- */
+
 	else if (0 <= fHPrime && fHPrime < 2)
 	{
 		*fR = fX;
 		*fG = fC;
 		*fB = 0;
 	}
-/**
- * @brief [TODO] Describe the function if
- * @return else [description]
- * @param 3 [description]
- */
 	else if (0 <= fHPrime && fHPrime < 3)
 	{
 		*fR = 0;
 		*fG = fC;
 		*fB = fX;
 	}
-/**
- * @brief [TODO] Describe the function if
- * @return else [description]
- * @param 4 [description]
- */
 	else if (0 <= fHPrime && fHPrime < 4)
 	{
 		*fR = 0;
 		*fG = fX;
 		*fB = fC;
 	}
-/**
- * @brief [TODO] Describe the function if
- * @return else [description]
- * @param 5 [description]
- */
 	else if (0 <= fHPrime && fHPrime < 5)
 	{
 		*fR = fX;
 		*fG = 0;
 		*fB = fC;
 	}
-/**
- * @brief [TODO] Describe the function if
- * @return else [description]
- * @param 6 [description]
- */
 	else if (0 <= fHPrime && fHPrime < 6)
 	{
 		*fR = fC;
@@ -388,22 +329,7 @@ void kanavi_node::publish_pointcloud(PointCloudT::Ptr cloud_)
 	pcl::toROSMsg(*cloud_, msg_);
 
 	msg_.header.set__frame_id(fixedName_);	// rviz의 fixed frame을 따라가야함
-
 	msg_.header.set__stamp(this->get_clock()->now());
-
-	// log : check pointcloud size & ros2 msg data size
-	// msg_trans_count++;
-	// if(msg_trans_count == 1000)
-	{
-		// RCLCPP_INFO(rclcpp::get_logger(g_publisher->get_topic_name()), "MSG Size : %d -> %d", cloud_->size(), msg_.data.size());
-		// msg_trans_count = 0;
-	}
-
-	// log : check ros2 msg header : frame ID
-	// RCLCPP_INFO(rclcpp::get_logger(g_publisher->get_topic_name()), "Chekc MSG HEADER - Frame ID : %s", msg_.header.frame_id.c_str());
-
-	// log : check ros2 msg header : timestamp
-	// RCLCPP_INFO(rclcpp::get_logger(g_publisher->get_topic_name()), "Chekc MSG HEADER - TimeStamp : %u.%u sec", msg_.header.stamp.sec, msg_.header.stamp.nanosec);
 
 	publisher_->publish(msg_);
 }
