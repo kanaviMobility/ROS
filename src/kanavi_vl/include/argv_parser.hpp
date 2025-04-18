@@ -48,6 +48,10 @@ struct argvContainer
 };
 
 
+/**
+ * @class argv_parser
+ * @brief Parses command-line arguments to extract program configurations and options.
+ */
 class argv_parser
 {
 private:
@@ -55,6 +59,12 @@ private:
 	argvContainer argvResult;
 
 	// funcs.
+/**
+ * @brief Parses command-line arguments.
+ * @return void
+ * @param &argc_ The number of command-line arguments.
+ * @param **argv_ The array of argument strings passed to the program.
+ */
 	void parseArgv(const int &argc_, char **argv_);
 	
 	// Vars.
@@ -66,14 +76,18 @@ public:
 	}
 	~argv_parser(){}
 
+/**
+ * @brief Returns the parsed command-line parameters.
+ * @return argvContainer An object containing extracted arguments such as IP address, port, topic name, etc.
+ */
 	argvContainer getParameters();
 };
 
 /**
- * @brief parse argv
- * 
- * @param argc_ argc
- * @param argv_ argv
+ * @brief Parses command-line arguments.
+ * @return void
+ * @param &argc_ The number of command-line arguments.
+ * @param **argv_ The array of argument strings passed to the program.
  */
 inline void argv_parser::parseArgv(const int &argc_, char **argv_)
 {
@@ -108,9 +122,8 @@ inline void argv_parser::parseArgv(const int &argc_, char **argv_)
 }
 
 /**
- * @brief return argv parsing result
- * 
- * @return argvContainer 
+ * @brief Returns the parsed command-line parameters.
+ * @return argvContainer An object containing extracted arguments such as IP address, port, topic name, etc.
  */
 inline argvContainer argv_parser::getParameters()
 {

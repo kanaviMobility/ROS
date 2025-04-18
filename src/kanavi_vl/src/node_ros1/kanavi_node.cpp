@@ -1,12 +1,5 @@
 #include "ros1/kanavi_node.h"
 
-/**
- * @brief Construct a new kanavi node::kanavi node object
- *
- * @param node_ Node name
- * @param argc_ argc
- * @param argv_ argv
- */
 kanavi_node::kanavi_node(const std::string &node_, int &argc_, char **argv_)
 {
 	checked_multicast_ = false;
@@ -61,19 +54,16 @@ kanavi_node::kanavi_node(const std::string &node_, int &argc_, char **argv_)
 		int model_ = -1;
 		if (!strcmp("r270", node_.c_str()))
 		{
-			printf("check Node R270\n");
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R270::BASE_ZERO_ANGLE;
 		}
 		else if (!strcmp("r4", node_.c_str()))
 		{
-			printf("check Node R4\n");
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R4::BASE_ZERO_ANGLE;
 		}
 		else if (!strcmp("r2", node_.c_str()))
 		{
-			printf("check Node R2\n");
 			model_ = KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2;
 			rotate_angle = KANAVI::COMMON::SPECIFICATION::R2::BASE_ZERO_ANGLE;
 		}
@@ -97,19 +87,11 @@ kanavi_node::kanavi_node(const std::string &node_, int &argc_, char **argv_)
 	}
 }
 
-/**
- * @brief Destroy the kanavi node::kanavi node object
- *
- */
 kanavi_node::~kanavi_node()
 {
 	m_udp->disconnect();
 }
 
-/**
- * @brief when command '-h' input, Display Help Strings
- *
- */
 void kanavi_node::helpAlarm()
 {
 	printf("[HELP]============ \n"
@@ -122,10 +104,7 @@ void kanavi_node::helpAlarm()
 		   KANAVI::ROS::PARAMETER_IP.c_str(), KANAVI::ROS::PARAMETER_IP.c_str(), KANAVI::ROS::PARAMETER_Multicast.c_str(), KANAVI::ROS::PARAMETER_Multicast.c_str(), KANAVI::ROS::PARAMETER_FIXED.c_str(), KANAVI::ROS::PARAMETER_TOPIC.c_str());
 }
 
-/**
- * @brief receive Data From UDP using Timer
- *
- */
+
 void kanavi_node::receiveData()
 {
 	// recv data using udp
@@ -141,10 +120,6 @@ void kanavi_node::receiveData()
 	}
 }
 
-/**
- * @brief Node Process END checker
- *
- */
 void kanavi_node::endProcess()
 {
 	// Clean up resources safely
@@ -153,13 +128,9 @@ void kanavi_node::endProcess()
 	ros::shutdown();
 }
 
-/**
- * @brief output Log for LiDAR & ROS Node Information
- *
- */
 void kanavi_node::log_set_parameters()
 {
-	printf("---------KANAVI ROS2------------\n");
+	printf("---------KANAVI ROS1------------\n");
 	printf("Local IP :\t%s\n", local_ip_.c_str());
 	printf("Port Num. :\t%d\n", port_);
 	if (checked_multicast_)
@@ -175,11 +146,7 @@ void kanavi_node::run()
 {
 	ros::Rate rate(30);
 	// SECTION - Init LiDAR
-	// active UDP RECV using timer
-	// timer_ = nh_.createTimer(ros::Duration(1), std::bind(&kanavi_node::receiveData, this));
-
 	int udp_return = m_udp->connect();
-	printf("UDP CONNECT %d\n", udp_return);
 
 	timer_.start();
 	//! SECTION
@@ -188,14 +155,11 @@ void kanavi_node::run()
 	while (ros::ok())
 	{
 		// recv data from UDP
-		printf("[NODE] REC DATA\n");
 		receiveData();
 
 		// get Point Cloud from Lidar processor
-		printf("[NODE] CHECK Process END\n");
 		if (kanavi_->checkedProcessEnd())
 		{
-			printf("*** Parsing Process END***\n");
 
 			// datagram Length -> pointcloud
 			length2PointCloud(kanavi_->getDatagram());
@@ -219,7 +183,6 @@ void kanavi_node::run()
 
 void kanavi_node::length2PointCloud(kanaviDatagram datagram)
 {
-	printf("### Processing Point Cloud\n");
 
 	// generate Point Cloud
 	generatePointCloud(datagram, *g_pointcloud);

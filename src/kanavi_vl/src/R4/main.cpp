@@ -3,13 +3,11 @@
 #if defined(ROS1)
 #include <ros1/kanavi_node.h>
 
+// Entry point for this module
 int main(int argc, char **argv)
 {
-	printf("ROS1 build test\n");
 	ros::init(argc, argv, "r4");
-
 	kanavi_node node("r4", argc, argv);
-
 	node.run();
 
 	return 0;
@@ -19,6 +17,7 @@ int main(int argc, char **argv)
 
 #include <ros2/kanavi_node.h>
 
+// Entry point for this module
 int main(int argc, char **argv)
 {
 	// init ROS2
@@ -37,4 +36,3 @@ int main(int argc, char **argv)
 }
 
 #endif
-

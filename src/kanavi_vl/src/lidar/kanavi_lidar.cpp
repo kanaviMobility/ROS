@@ -35,13 +35,13 @@ int kanavi_lidar::classification(const std::vector<u_char> &data)
 		switch (indus_M)
 		{
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2:
-			printf("********R2**********\n");
+		printf("********R2**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2;
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4:
-			printf("********R4**********\n");
+		printf("********R4**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4;
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270:
-			printf("********R270**********\n");
+		printf("********R270**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270;
 		default:
 			return -1;
@@ -113,7 +113,6 @@ int kanavi_lidar::checkDataInputEnd(const std::vector<u_char> &data)
 		}
 	}
 
-	printf("%d, %d\n", datagram_->model, data.size());
 	return KANAVI::PROCESS::InputMode::FAIL;
 }
 
@@ -126,7 +125,6 @@ int kanavi_lidar::process(const std::vector<u_char> &data)
 {
 	std::vector<u_char> buf_;
 
-	// printf("check get checked_onGoing mode : %d\n", checked_onGoing);
 	// check data Input end.
 	if (!checked_onGoing)
 	{
@@ -134,7 +132,6 @@ int kanavi_lidar::process(const std::vector<u_char> &data)
 		// check data input END
 		if (checked_input_end == KANAVI::PROCESS::InputMode::FAIL)
 		{
-			// printf("LiDAR input Data ERROR : %d/%d \n", data.size(), datagram_->input_packet_size);
 			return checked_input_end;
 		}
 		else if (checked_input_end == KANAVI::PROCESS::InputMode::OnGoing)
@@ -173,7 +170,6 @@ int kanavi_lidar::process(const std::vector<u_char> &data)
 		perror("LiDAR Model not Matched");
 		return -1;
 	}
-	printf("Lidar Processing...GO!\n");
 
 	// SECTION---process LiDAR parse
 	parse(buf_);

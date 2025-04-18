@@ -1,12 +1,5 @@
 #include "udp.h"
 
-/**
- * @brief Construct a new kanavi udp::kanavi udp object
- * 
- * @param local_ip_ local IP address
- * @param port_ 	port number
- * @param multicast_ip_ multicast IP for UDP
- */
 kanavi_udp::kanavi_udp(const std::string &local_ip_, const int &port_, const std::string &multicast_ip_)
 {
 	// init Unicast
@@ -16,12 +9,6 @@ kanavi_udp::kanavi_udp(const std::string &local_ip_, const int &port_, const std
 	}
 }
 
-/**
- * @brief Construct a new kanavi udp::kanavi udp object
- * 
- * @param local_ip_ local IP address
- * @param port_ 	port number
- */
 kanavi_udp::kanavi_udp(const std::string &local_ip_, const int &port_)
 {
 	// init Unicast
@@ -31,23 +18,11 @@ kanavi_udp::kanavi_udp(const std::string &local_ip_, const int &port_)
 	}
 }
 
-/**
- * @brief Destroy the kanavi udp::kanavi udp object
- * 
- */
+
 kanavi_udp::~kanavi_udp()
 {
 }
 
-/**
- * @brief initialize UDP
- * 
- * @param ip_ 			local IP address set
- * @param port_ 		Port Number
- * @param multicast_ip_ Multicast IP address set
- * @param multi_checked_ checked Multicast Used
- * @return int 
- */
 int kanavi_udp::init(const std::string &ip_, const int &port_, std::string multicast_ip_, bool multi_checked_)
 {
 	memset(g_udp_buf, 0, MAX_BUF_SIZE);
@@ -88,10 +63,6 @@ int kanavi_udp::init(const std::string &ip_, const int &port_, std::string multi
 	return 0;
 }
 
-/**
- * @brief check UDP send & recv buf Size
- * 
- */
 void kanavi_udp::check_udp_buf_size()
 {
 	int send_size;
@@ -118,22 +89,15 @@ void kanavi_udp::check_udp_buf_size()
 
 		if(send_size < MAX_BUF_SIZE)
 		{
-			printf("send size resizing..\n");
 			setsockopt(g_udpSocket, SOL_SOCKET, SO_SNDBUF, &setSize, sizeof(setSize));			
 		}
 		if(recv_size < MAX_BUF_SIZE)
 		{
-			printf("recv size resizing..\n");
 			setsockopt(g_udpSocket, SOL_SOCKET, SO_RCVBUF, &setSize, sizeof(setSize));
 		}
 	}
 }
 
-/**
- * @brief receive data from UDP
- * 
- * @return std::vector<u_char> retrun Raw data from UDP
- */
 std::vector<u_char> kanavi_udp::getData()
 {
 	memset(&g_senderAddr, 0, sizeof(struct sockaddr_in));
@@ -143,12 +107,9 @@ std::vector<u_char> kanavi_udp::getData()
 
 	int size = recvfrom(g_udpSocket, g_udp_buf, MAX_BUF_SIZE, 0, (struct sockaddr*)&g_senderAddr, &addr_len);
 
-	printf("CHECK SIZE : %d\n", size);
 	char ip_str[INET_ADDRSTRLEN];
     // IP 주소 변환 (network byte order → string)
     inet_ntop(AF_INET, &(g_senderAddr.sin_addr), ip_str, sizeof(ip_str));
-	printf("IP Address: %s\n", ip_str);
-    printf("Port: %d\n", ntohs(g_senderAddr.sin_port));
 
 	if(size > 0)
 	{
@@ -160,31 +121,16 @@ std::vector<u_char> kanavi_udp::getData()
 	return output;
 }
 
-/**
- * @brief send data using UDP
- * 
- * @param data_ data for send
- */
 void kanavi_udp::sendData(std::vector<u_char> data_)
 {
 	printf("NOT ACTIVATED...\n");
 }
 
-/**
- * @brief UDP connect
- * 
- * @return int return bind code
- */
 int kanavi_udp::connect()
 {
 	return bind(g_udpSocket, (struct sockaddr*)&g_udpAddr, sizeof(g_udpAddr));
 }
 
-/**
- * @brief UDP disconnect
- * 
- * @return int return close code
- */
 int kanavi_udp::disconnect()
 {
 	return close(g_udpSocket);

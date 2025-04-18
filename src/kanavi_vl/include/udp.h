@@ -35,14 +35,33 @@
 
 #define MAX_BUF_SIZE 65000
 
+/**
+ * @class kanavi_udp
+ * @brief Provides UDP socket communication functionality including multicast support for Kanavi sensors.
+ *
+ * This class handles socket setup, data transmission, and reception over UDP.
+ * It supports both unicast and multicast communication modes.
+ */
 class kanavi_udp
 {
 private:
 	/* data */
 
 	//SECTION -- FUNCS.
+/**
+ * @brief Initializes the UDP socket with given IP, port, and optional multicast settings.
+ * 
+ * @param ip_ Local IP address to bind the socket.
+ * @param port_ Port number for UDP communication.
+ * @param multicast_ip_ (Optional) Multicast group IP address. Default is "224.0.0.5".
+ * @param multi_checked_ Whether to enable multicast reception.
+ * @return 0 if successful, or error code otherwise.
+ */
 	int init(const std::string &ip_, const int &port_, std::string multicast_ip_ = "224.0.0.5", bool multi_checked_ = false);
 
+/**
+ * @brief Checks and logs the current receive buffer size for the UDP socket.
+ */
 	void check_udp_buf_size();
 
 	//!SECTION --------
@@ -58,15 +77,43 @@ private:
 
 	//!SECTION --------
 public:
+/**
+ * @brief Constructor for initializing UDP communication with local and multicast IP.
+ * 
+ * @param local_ip_ Local IP address to bind.
+ * @param port_ UDP port number.
+ * @param multicast_ip_ Multicast IP address to join.
+ */
 	kanavi_udp(const std::string &local_ip_, const int &port_, const std::string &multicast_ip_);
 	kanavi_udp(const std::string &local_ip_, const int &port_);
 	~kanavi_udp();
 
+/**
+ * @brief Receives a UDP packet and returns the raw data.
+ * 
+ * @return Vector of received bytes.
+ */
 	std::vector<u_char> getData();
 
+/**
+ * @brief Sends a UDP packet to the configured address (Not Used).
+ * 
+ * @param data_ Byte buffer to send.
+ */
 	void sendData(std::vector<u_char> data_);
 
+/**
+ * @brief Establishes the UDP socket connection.
+ * 
+ * @return 0 if successful, or error code otherwise.
+ */
 	int connect();
+	
+/**
+ * @brief Closes the UDP socket connection.
+ * 
+ * @return 0 if successful, or error code otherwise.
+ */
 	int disconnect();
 };
 #endif // __UDP_H__
