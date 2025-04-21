@@ -3,7 +3,7 @@
 ## 1. 프로젝트 개요
 
 이 프로젝트는 ROS1과 ROS2를 하나의 소스 트리에서 동시에 빌드 및 실행할 수 있도록 구성된 하이브리드 구조입니다.
-특정 LiDAR 모델(R2, R4, R270)에 따라 UDP로 데이터를 수신하고, ROS1 또는 ROS2 메시지로 퍼블리시합니다.
+카네비모빌리티 LiDAR 모델(R2, R4, R270)을 지원하며 UDP를 기반으로로 데이터를 수신하고, ROS1 또는 ROS2 메시지로 퍼블리시합니다.
 
 ### 지원하는 OS
 
@@ -168,17 +168,6 @@ ros2 run kanavi_vl R4 -i 192.168.123.100 5000 -m 224.0.0.5
 
 본 프로젝트는 BSD 3-Clause License 하에 배포됩니다.  
 루트 디렉토리에 `LICENSE` 파일이 포함되어 있습니다.
-
-### 각 파일에 추가 권장되는 주석 (선택사항)
-
-```cpp
-// Copyright (c) 2024, Kanavi Mobility
-// All rights reserved.
-//
-// This file is part of the ROS1/ROS2 Hybrid Build Project.
-// Licensed under the BSD 3-Clause License.
-// You may obtain a copy of the License at the root of this repository (LICENSE file).
-```
 
 ---
 
