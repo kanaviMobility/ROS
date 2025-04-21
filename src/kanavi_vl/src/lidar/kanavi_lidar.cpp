@@ -35,13 +35,13 @@ int kanavi_lidar::classification(const std::vector<u_char> &data)
 		switch (indus_M)
 		{
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2:
-		printf("********R2**********\n");
+			printf("********R2**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R2;
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4:
-		printf("********R4**********\n");
+			printf("********R4**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R4;
 		case KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270:
-		printf("********R270**********\n");
+			printf("********R270**********\n");
 			return KANAVI::COMMON::PROTOCOL_VALUE::MODEL::R270;
 		default:
 			return -1;
@@ -123,6 +123,7 @@ int kanavi_lidar::checkChannel(const std::vector<u_char> &data)
 
 int kanavi_lidar::process(const std::vector<u_char> &data)
 {
+	printf("---------KANAVI PROCESS------------\n");
 	std::vector<u_char> buf_;
 
 	// check data Input end.

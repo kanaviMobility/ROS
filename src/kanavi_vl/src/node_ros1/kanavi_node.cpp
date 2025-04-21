@@ -183,11 +183,8 @@ void kanavi_node::run()
 
 void kanavi_node::length2PointCloud(kanaviDatagram datagram)
 {
-
 	// generate Point Cloud
 	generatePointCloud(datagram, *g_pointcloud);
-
-	// printf("CHECK point CLoud NUM : %d\n", g_pointcloud->size());
 }
 
 void kanavi_node::calculateAngular(int model)
