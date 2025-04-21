@@ -113,8 +113,8 @@ ros2 run kanavi_vl R4 -h
     ex) -i [ip] [port]
 -m : set multicast IP Address
     ex) -m [multicast ip]
--fix : set fixed frame Name for RViz
--topic : set topic name for RViz
+-fix : set fixed frame ID
+-topic : set topic name
 ```
 
 ##### 📌 파라미터 설명
