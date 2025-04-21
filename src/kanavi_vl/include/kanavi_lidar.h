@@ -95,64 +95,6 @@ namespace KANAVI
 	}
 }
 
-
-//TODO - TEST for code
-// Abstract base class for model-specific frame assemblers
-class FrameAssembler {
-	public:
-		virtual bool addData(const std::vector<u_char>& chunk) = 0;
-		virtual kanaviDatagram toDatagram() = 0;
-		virtual void reset() = 0;
-		virtual ~FrameAssembler() = default;
-	};
-	
-	// R4 assembler implementation
-	class R4Assembler : public FrameAssembler {
-	private:
-		std::vector<u_char> buffer_;
-		const int expected_chunks_ = 4;
-		const int chunk_size_ = 809;
-	public:
-		bool addData(const std::vector<u_char>& chunk) override {
-			buffer_.insert(buffer_.end(), chunk.begin(), chunk.end());
-			return (buffer_.size() >= expected_chunks_ * chunk_size_);
-		}
-	
-		kanaviDatagram toDatagram() override {
-			kanaviDatagram result;
-			// TODO: parse buffer_ into result
-			return result;
-		}
-	
-		void reset() override {
-			buffer_.clear();
-		}
-	};
-	
-	// R270 assembler implementation
-	class R270Assembler : public FrameAssembler {
-	private:
-		std::vector<u_char> buffer_;
-		const int expected_size_ = 2169;
-	public:
-		bool addData(const std::vector<u_char>& chunk) override {
-			buffer_.insert(buffer_.end(), chunk.begin(), chunk.end());
-			return (buffer_.size() >= expected_size_);
-		}
-	
-		kanaviDatagram toDatagram() override {
-			kanaviDatagram result;
-			// TODO: parse buffer_ into result
-			return result;
-		}
-	
-		void reset() override {
-			buffer_.clear();
-		}
-	};
-
-//!SECTION
-
 /**
  * @class kanavi_lidar
  * @brief Handles LiDAR data parsing and processing for different Kanavi LiDAR models (R2, R4, R270).
@@ -239,8 +181,6 @@ public:
  * @return Status code after processing.
  */
 	int process(const std::vector<u_char> &data);
-
-	int process2(const std::vector<u_char> &data);
 
 /**
  * @brief Returns the model name as a string.

@@ -312,34 +312,3 @@ kanaviDatagram kanavi_lidar::getDatagram()
 {
 	return *datagram_;
 }
-
-//TODO - TEST
-int kanavi_lidar::process2(const std::vector<u_char> &data)
-{
-	printf("---------KANAVI PROCESS------------\n");
-
-	std::unique_ptr<FrameAssembler> assembler;
-
-	if (datagram_->model == KANAVI::COMMON::PROTOCOL_VALUE::R4)
-	{
-		assembler = std::make_unique<R4Assembler>();
-	}
-	else if (datagram_->model == KANAVI::COMMON::PROTOCOL_VALUE::R270)
-	{
-		assembler = std::make_unique<R270Assembler>();
-	}
-	else
-	{
-		printf("Unsupported model: %d\n", datagram_->model);
-		return -1;
-	}
-
-	if (assembler->addData(data))
-	{
-		auto datagram = assembler->toDatagram();
-		// TODO: convert datagram to point cloud and publish
-		assembler->reset();
-	}
-
-	return 0;
-}
