@@ -46,6 +46,8 @@ if($ENV{ROS_VERSION} STREQUAL "1")
 	pcl_ros
 	visualization_msgs
 	)
+
+ 	catkin_package()
 	
 	set(LIBRARIES
 		kanavi_node
