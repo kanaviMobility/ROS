@@ -83,7 +83,6 @@ if($ENV{ROS_VERSION} STREQUAL "1")
 	#----define R270 node 
 	add_executable(R270 
 		src/R270/main.cpp
-		${LIB_OBJS}
 	)
 
 	target_link_libraries(R270
@@ -96,7 +95,6 @@ if($ENV{ROS_VERSION} STREQUAL "1")
 	#----define R4 node 
 	add_executable(R4 
 		src/R4/main.cpp
-		${LIB_OBJS}
 	)
 
 	target_link_libraries(R4
@@ -141,9 +139,9 @@ set(LIBRARIES
 	kanavi_lidar
 )
 
-foreach(LIBRARY ${LIBRARIES})
-	set(LIB_OBJS ${LIB_OBJS} $<TARGET_OBJECTS:${LIBRARY}>)
-endforeach()
+# foreach(LIBRARY ${LIBRARIES})
+# 	set(LIB_OBJS ${LIB_OBJS} $<TARGET_OBJECTS:${LIBRARY}>)
+# endforeach()
 
 include_directories(
 	${PCL_INCLUDE_DIRS}
