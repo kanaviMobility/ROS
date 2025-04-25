@@ -6,10 +6,15 @@ if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
 endif()
 
-# Default to C++14
+# Set C++ version based on ROS version
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  if($ENV{ROS_VERSION} STREQUAL "2")
+    set(CMAKE_CXX_STANDARD 17)
+  else()
+    set(CMAKE_CXX_STANDARD 14)
+  endif()
 endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions( -fPIC )
 
@@ -120,9 +125,10 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(PCL REQUIRED)
+find_package(rcl_interfaces REQUIRED)
+find_package(rosidl_default_runtime REQUIRED)
 
 find_package(PkgConfig REQUIRED)
-find_package(rcl_interfaces REQUIRED)
 pkg_check_modules(EIGEN eigen3 REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
@@ -151,14 +157,15 @@ include_directories(
 	${rclcpp_INCLUDE_DIRS}
 	${sensor_msgs_INCLUDE_DIRS}
 	${pcl_conversions_INCLUDE_DIRS}
+	${rcl_interfaces_INCLUDE_DIRS}
 	include
 	include/${PROJECT_NAME}
 )
 
 # # add sub dir.
-add_subdirectory(src/node_ros2)
-add_subdirectory(src/udp)
-add_subdirectory(src/lidar)
+add_subdirectory(src/node_ros2) #kanavi_node
+add_subdirectory(src/udp)		#kanavi_udp
+add_subdirectory(src/lidar)		#kanavi_lidar
 
 link_directories(
 	${PCL_LIBRARY_DIRS}
@@ -174,6 +181,14 @@ add_executable(R2
 	${LIB_OBJS}
 )
 ament_target_dependencies(R2 ${THIS_PACKAGE_INCLUDE_DEPENDS})
+
+target_link_libraries(R2 
+	kanavi_node
+	kanavi_udp
+	kanavi_lidar
+	${PCL_LIBRARIES}
+	${EIGEN_LIBRARIES}
+)
 #-----------------------------------------------------------
 
 #----define R4 node 
@@ -182,6 +197,14 @@ add_executable(R4
 	${LIB_OBJS}
 )
 ament_target_dependencies(R4 ${THIS_PACKAGE_INCLUDE_DEPENDS})
+
+target_link_libraries(R4
+	kanavi_node
+	kanavi_udp
+	kanavi_lidar
+	${PCL_LIBRARIES}
+	${EIGEN_LIBRARIES}
+)
 #-----------------------------------------------------------
 
 #----define R270 node 
@@ -192,6 +215,9 @@ add_executable(R270
 ament_target_dependencies(R270 ${THIS_PACKAGE_INCLUDE_DEPENDS})
 
 target_link_libraries(R270 
+	kanavi_node
+	kanavi_udp
+	kanavi_lidar
 	${PCL_LIBRARIES}
 	${EIGEN_LIBRARIES}
 )
