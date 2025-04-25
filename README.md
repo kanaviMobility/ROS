@@ -13,7 +13,7 @@ Kanavi Mobility LiDAR 모델(R2, R4, R270)을 지원하며 UDP를 기반으로�
 | ROS / Ubuntu | Ubuntu 24.04            | Ubuntu 22.04                  | Ubuntu 20.04                                | Ubuntu 18.04            |
 |--------------|--------------------------|-------------------------------|---------------------------------------------|--------------------------|
 | **ROS 1**     | -                        | -                             | **Noetic**<br>✅ Tested                      | **Melodic**<br>✅ Tested |
-| **ROS 2**     | **Jazzy**<br>⚠️ Not Tested | **Humble / Iron**<br>⚠️ Not Tested | **Foxy**<br>✅ Tested| -                        |
+| **ROS 2**     | **rolling / Jazzy**<br>⚠️ Not Tested | **Humble**<br>✅ Tested | **Foxy**<br>✅ Tested| -                        |
 
 ---
 
