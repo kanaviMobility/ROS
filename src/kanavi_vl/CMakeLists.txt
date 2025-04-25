@@ -122,6 +122,7 @@ find_package(pcl_conversions REQUIRED)
 find_package(PCL REQUIRED)
 
 find_package(PkgConfig REQUIRED)
+find_package(rcl_interfaces REQUIRED)
 pkg_check_modules(EIGEN eigen3 REQUIRED)
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
@@ -130,6 +131,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
 	pcl_conversions
 	sensor_msgs
 	std_msgs
+	rcl_interfaces
 )
 
 # # set user defined Libs
