@@ -22,6 +22,10 @@
 #include <iostream>
 #include <vector>
 #include "common.h"
+#include "r2_spec.h"
+#include "r4_spec.h"
+#include "r270_spec.h"
+
 typedef struct kanavi_datagram{
 	// LiDAR Model
 	int model;
@@ -114,18 +118,7 @@ private:
  * @return Integer representing the classification result or model type.
  */
 	int classification(const std::vector<u_char> &data);
-/**
- * @brief Checks whether the full LiDAR data packet has been received.
- * @param data The data buffer to be checked.
- * @return 1 if input is complete; 0 otherwise.
- */
-	int checkDataInputEnd(const std::vector<u_char> &data);
-/**
- * @brief Validates the channel information in the LiDAR data packet.
- * @param data The data buffer to be validated.
- * @return 1 if channel is valid; -1 if error.
- */
-	int checkChannel(const std::vector<u_char> &data);
+
 /**
  * @brief Parses the input LiDAR data according to the internal model.
  * @param data Raw data to parse.
@@ -164,8 +157,12 @@ private:
 	std::vector<u_char> temp_buf_;	// for complete packet
 	bool checked_onGoing;
 
+	int checked_model;
 	bool checked_pares_end;
 	bool checked_ch_r4[4];
+
+	bool checked_ch0_inputed;
+	size_t total_size;
 
 public:
 /**

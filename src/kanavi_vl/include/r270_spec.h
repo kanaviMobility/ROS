@@ -11,7 +11,7 @@
 #include "common.h"
 
 namespace KANAVI {
-	namespace R4 {
+	namespace R270 {
 		const double	HORIZONTAL_FoV			= 270;
 		const double	HORIZONTAL_RESOLUTION	= 0.25;
 		const int		HORIZONTAL_DATA_CNT		= static_cast<int>(HORIZONTAL_FoV-HORIZONTAL_RESOLUTION);
