@@ -66,7 +66,7 @@ private:
 /**
  * @brief Receives LiDAR data from the UDP socket and processes it.
  */
-	void receiveData();
+	std::vector<u_char> receiveDatagram();
 
 /**
  * @brief Ends the ROS1 node operation and releases resources.

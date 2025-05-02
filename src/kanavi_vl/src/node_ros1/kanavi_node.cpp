@@ -104,20 +104,10 @@ void kanavi_node::helpAlarm()
 		   KANAVI::ROS::PARAMETER_IP.c_str(), KANAVI::ROS::PARAMETER_IP.c_str(), KANAVI::ROS::PARAMETER_Multicast.c_str(), KANAVI::ROS::PARAMETER_Multicast.c_str(), KANAVI::ROS::PARAMETER_FIXED.c_str(), KANAVI::ROS::PARAMETER_TOPIC.c_str());
 }
 
-
-void kanavi_node::receiveData()
+std::vector<u_char> kanavi_node::receiveDatagram()
 {
 	// recv data using udp
-	std::vector<u_char> buf_ = m_udp->getData();
-
-	// process data
-
-	// check input data size
-	if (!buf_.empty())
-	{
-		// input data processing
-		kanavi_->process(buf_);
-	}
+	return m_udp->getData();
 }
 
 void kanavi_node::endProcess()
@@ -155,7 +145,13 @@ void kanavi_node::run()
 	while (ros::ok())
 	{
 		// recv data from UDP
-		receiveData();
+		std::vector<u_char> buf_ = receiveDatagram();
+
+		if(!buf_.empty())
+		{
+			// kanavi_->process(buf_);
+			kanavi_->process(buf_);
+		}
 
 		// get Point Cloud from Lidar processor
 		if (kanavi_->checkedProcessEnd())
