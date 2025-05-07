@@ -1,4 +1,4 @@
-# KANAVI Mobility LiDAR ROS1/ROS Documentation
+# KANAVI Mobility LiDAR ROS1/ROS2 Documentation
 
 ## 1. 프로젝트 개요
 
