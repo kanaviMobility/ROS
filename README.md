@@ -124,7 +124,7 @@ ros2 run kanavi_vl R4 -h
 | `-i`        | 네트워크 IP 및 포트 설정                 | `-i 192.168.0.1 8888`   |
 | `-m`            | 멀티캐스트 IP 설정                       | `-m 224.0.0.1`   |
 | `-fix`          | fixed frame ID를 설정      | `-fix map`        |
-| `-topic`                | ROS에서 퍼블리시할 topic Name      | `-topic /scan`                  |
+| `-topic`                | ROS에서 퍼블리시할 topic Name      | `-topic scan`                  |
 
 > 참고: 파라미터 이름은 `KANAVI::ROS::PARAMETER_***` 상수로 관리됩니다.
 
